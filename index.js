@@ -12,11 +12,11 @@ program.parse();
 
 const options = program.opts();
 
-async function invokeAction({ action, id, name, email, phone }) {
+async function invokeAction({ action, id, ...data }) {
   switch (action) {
     case "list":
       const contactsList = await contactsServices.listContacts();
-      console.log(contactsList);
+      console.table(contactsList);
       break;
 
     case "get":
@@ -25,11 +25,13 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "add":
-      // ... name email phone
+      const newContact = await contactsServices.addContact(data);
+      console.log(newContact);
       break;
 
     case "remove":
-      // ... id
+      const deleteContact = await contactsServices.removeContact(id);
+      console.log(deleteContact);
       break;
 
     default:
@@ -37,5 +39,4 @@ async function invokeAction({ action, id, name, email, phone }) {
   }
 }
 
-// invokeAction(options);
-invokeAction({action: "get", id: "qdggE76Jtbfd9eWJHrssHw"});
+invokeAction(options);
